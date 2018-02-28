@@ -23,6 +23,7 @@ public class KursController {
     private KursRepository kursRepo;
     @Autowired
     private StudentRepository studentRepo;
+    private int DAOType;
 
     public KursController() {
 
@@ -67,9 +68,12 @@ public class KursController {
         kursRepo.delete(new Integer(id));
     }
 
-    private void setList() {
+    public void setList() {
         kursView = new KursView();
         lista = Lists.newArrayList(kursRepo.findAll());
     }
 
+    public void setDAOType(int DAOType) {
+        this.DAOType = DAOType;
+    }
 }

@@ -22,6 +22,7 @@ public class MainController {
     StudentController studentController;
 
     MainView mainView;
+
     public MainController() {
         mainView = new MainView();
     }
@@ -113,5 +114,10 @@ public class MainController {
     }
     private void setStudentToKurs() {
         studentController.setStudentToKurs();
+    }
+
+    public void setDAOType(int DAOType) {
+        studentController.setDAOType(DAOType);
+        kursController.setDAOType(DAOType);
     }
 }

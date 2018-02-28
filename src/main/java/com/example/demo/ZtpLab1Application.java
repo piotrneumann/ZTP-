@@ -4,6 +4,7 @@ import com.example.demo.Controller.KursController;
 import com.example.demo.Controller.MainController;
 import com.example.demo.Model.Kurs;
 import com.example.demo.Repo.KursRepository;
+import com.example.demo.Repo.StudentDaoJson;
 import com.example.demo.Repo.StudentRepository;
 import com.example.demo.View.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ MainController mainController;
 
 		mainController.showDAO();
 		int choice = mainController.getChoice();
+		mainController.setDAOType(choice);
+		//StudentDaoJson s = new StudentDaoJson();
 
 
 

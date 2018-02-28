@@ -20,6 +20,10 @@ public class StudentController {
 
     List<Student> lista;
     StudentView studentView;
+    private int DAOType;
+
+    public final int DBType = 1;
+    public final int JSONType = 2;
 
     @Autowired
     private StudentRepository studentRepo;
@@ -32,7 +36,6 @@ public class StudentController {
 
     public void addStudent() {
         setList();
-        System.out.println("SIEMA");
         Student student = studentView.addStudent();
         studentRepo.save(student);
     }
@@ -61,8 +64,13 @@ public class StudentController {
     }
 
     private void setList() {
-        studentView = new StudentView();
-        lista = Lists.newArrayList(studentRepo.findAll());
+        if (DAOType == DBType) {
+            studentView = new StudentView();
+            lista = Lists.newArrayList(studentRepo.findAll());
+        } else if (DAOType == JSONType) {
+
+        }
+
     }
 
     public void setStudentToKurs() {
@@ -71,5 +79,9 @@ public class StudentController {
         Student student = studentRepo.findOne(new Integer(ids));
         student.setIdkusru(idk);
         studentRepo.save(student);
+    }
+
+    public void setDAOType(int DAOType) {
+        this.DAOType = DAOType;
     }
 }
