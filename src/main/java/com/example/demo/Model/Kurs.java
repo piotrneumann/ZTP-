@@ -47,6 +47,10 @@ public class Kurs {
         this.typ = typ;
     }
 
+    public String toFile() {
+        return ";"+nazwa+";"+typ;
+    }
+
     @Override
     public String toString() {
         return "Kurs{" +

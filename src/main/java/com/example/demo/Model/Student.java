@@ -63,6 +63,10 @@ public class Student {
         this.idkusru = idkusru;
     }
 
+    public String toFile() {
+        return ";" + imie + ";" + nazwisko + ";" + idkusru;
+    }
+
     @Override
     public String toString() {
         return "Student{" +

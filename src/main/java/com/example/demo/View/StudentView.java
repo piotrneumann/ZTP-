@@ -25,7 +25,7 @@ public class StudentView {
         imie = sc.nextLine();
         System.out.println("Podaj nazwisko");
         nazwisko = sc.nextLine();
-        return new Student(imie, nazwisko);
+        return new Student(imie, nazwisko,-1);
     }
 
 //    public Student setStudentToKurs() {
