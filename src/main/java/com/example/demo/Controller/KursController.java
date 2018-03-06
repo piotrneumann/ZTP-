@@ -93,7 +93,7 @@ public class KursController {
         } else if (DAOType == FileType) {
             for (Student student : studentDaoFile.findAll()) {
                 if (student.getIdkusru() == id) {
-                    student.setIdkusru(0);
+                    student.setIdkusru(-1);
                     studentDaoFile.edit(student);
                 }
             }

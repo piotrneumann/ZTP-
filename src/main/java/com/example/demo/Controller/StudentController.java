@@ -84,6 +84,7 @@ public class StudentController {
     }
 
     public void setStudentToKurs() {
+        setList();
         int ids = studentView.editStudent();
         int idk = studentView.getKursId();
         Student student = null;

@@ -52,14 +52,25 @@ public class KursDaoFile implements IDaoFile <Kurs> {
     @Override
     public void save(Kurs kurs) {
         List<Kurs> lista = findAll();
+        if(!lista.isEmpty()) {
+            int lastIndex = lista.get(lista.size()-1).getId();
+            kurs.setId(lastIndex+1);
+        }
+
         lista.add(kurs);
         save(lista);
     }
 
     @Override
     public void delete(int i) {
+
         List<Kurs> lista = findAll();
-        lista.remove(i);
+        for (Kurs kurs  : lista) {
+            if(kurs.getId() == i) {
+                lista.remove(kurs);
+                break;
+            }
+        }
         save(lista);
     }
 
@@ -73,9 +84,8 @@ public class KursDaoFile implements IDaoFile <Kurs> {
             }
         } else {
             try (PrintWriter pw = new PrintWriter(f)) {
-                int a=0;
                 for(Kurs kurs : e) {
-                    pw.println((a++)+kurs.toFile());
+                    pw.println((kurs.getId())+kurs.toFile());
                 }
 
             } catch (FileNotFoundException e1) {
