@@ -1,8 +1,8 @@
 package com.example.demo.Repo;
 
-import com.example.demo.Interface.IDaoFile;
 import com.example.demo.Model.Kurs;
 import com.example.demo.Model.Student;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -15,13 +15,78 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 @Component
-public class KursDaoFile implements IDaoFile <Kurs> {
+public class KursDaoFile implements CrudRepository<Kurs, Integer> {
 
     String path = "kursfile.txt";
     File f;
+    @Override
+    public <S extends Kurs> S save(S s) {
+        List<Kurs> list = myFindAll();
+        for(int i=0;i<list.size();i++) {
+            if(list.get(i).getId() == s.getId()) {
+                edit(s);
+                return s;
+            }
+        }
+        s.setId(0);
+        mySave(s);
+        return s;
+    }
 
     @Override
-    public List<Kurs> findAll() {
+    public <S extends Kurs> Iterable<S> save(Iterable<S> iterable) {
+        return null;
+    }
+
+    @Override
+    public Kurs findOne(Integer integer) {
+        Kurs kurs = myFindOne(integer);
+        return kurs;
+    }
+
+    @Override
+    public boolean exists(Integer integer) {
+        return false;
+    }
+
+    @Override
+    public Iterable<Kurs> findAll() {
+        Iterable<Kurs> iterable = myFindAll();
+        return iterable;
+    }
+
+    @Override
+    public Iterable<Kurs> findAll(Iterable<Integer> iterable) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
+    @Override
+    public void delete(Integer integer) {
+        myDelete(integer);
+    }
+
+    @Override
+    public void delete(Kurs kurs) {
+        myDelete(kurs.getId());
+    }
+
+    @Override
+    public void delete(Iterable<? extends Kurs> iterable) {
+
+    }
+
+    @Override
+    public void deleteAll() {
+
+    }
+
+
+    public List<Kurs> myFindAll() {
         openFile();
         List<Kurs> list = new ArrayList<>();
         Scanner scanner = null;
@@ -43,39 +108,36 @@ public class KursDaoFile implements IDaoFile <Kurs> {
         return list;
     }
 
-    @Override
-    public Kurs findOne(int primaryKey) {
-        List<Kurs> lista = findAll();
+
+    public Kurs myFindOne(int primaryKey) {
+        List<Kurs> lista = myFindAll();
         return lista.get(primaryKey);
     }
 
-    @Override
-    public void save(Kurs kurs) {
-        List<Kurs> lista = findAll();
+    public void mySave(Kurs kurs) {
+        List<Kurs> lista = myFindAll();
         if(!lista.isEmpty()) {
             int lastIndex = lista.get(lista.size()-1).getId();
             kurs.setId(lastIndex+1);
         }
 
         lista.add(kurs);
-        save(lista);
+        mySave(lista);
     }
 
-    @Override
-    public void delete(int i) {
+    public void myDelete(int i) {
 
-        List<Kurs> lista = findAll();
+        List<Kurs> lista = myFindAll();
         for (Kurs kurs  : lista) {
             if(kurs.getId() == i) {
                 lista.remove(kurs);
                 break;
             }
         }
-        save(lista);
-    }
+        mySave(lista);
+}
 
-    @Override
-    public void save(List<Kurs> e) {
+    public void mySave(List<Kurs> e) {
         openFile();
         if(e.isEmpty()) {
             try (PrintWriter pw = new PrintWriter(f)) {
@@ -94,11 +156,11 @@ public class KursDaoFile implements IDaoFile <Kurs> {
         }
     }
 
-    @Override
+
     public void edit(Kurs kurs) {
-        List<Kurs> lista = findAll();
+        List<Kurs> lista = myFindAll();
         lista.set(kurs.getId(), kurs);
-        save(lista);
+        mySave(lista);
     }
 
     public void openFile() {

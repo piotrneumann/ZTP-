@@ -1,6 +1,10 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Model.Kurs;
+import com.example.demo.Repo.KursDaoFile;
+import com.example.demo.Repo.KursRepository;
+import com.example.demo.Repo.StudentDaoFile;
+import com.example.demo.Repo.StudentRepository;
 import com.example.demo.View.KursView;
 import com.example.demo.View.MainView;
 import com.google.common.collect.Lists;
@@ -17,11 +21,23 @@ public class MainController {
 
     @Autowired
     KursController kursController;
-
     @Autowired
     StudentController studentController;
 
+    @Autowired
+    KursDaoFile kursDaoFile;
+    @Autowired
+    StudentDaoFile studentDaoFile;
+    @Autowired
+    KursRepository kursRepository;
+    @Autowired
+    StudentRepository studentRepository;
+
     MainView mainView;
+
+    private final int DBDaoType = 1;
+    private final int FileDaoType = 2;
+    private int daoType;
 
 
 
@@ -114,12 +130,19 @@ public class MainController {
     private void editStudent() {
         studentController.editStudent();
     }
+
     private void setStudentToKurs() {
         studentController.setStudentToKurs();
     }
 
     public void setDAOType(int DAOType) {
-        studentController.setDAOType(DAOType);
-        kursController.setDAOType(DAOType);
+        if (DAOType == DBDaoType) {
+            studentController.setDAOType(kursRepository, studentRepository);
+            kursController.setDAOType(kursRepository, studentRepository);
+        } else if (DAOType == FileDaoType) {
+            studentController.setDAOType(kursDaoFile, studentDaoFile);
+            kursController.setDAOType(kursDaoFile, studentDaoFile);
+        }
+
     }
 }

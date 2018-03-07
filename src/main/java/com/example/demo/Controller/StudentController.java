@@ -1,11 +1,13 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Model.Kurs;
 import com.example.demo.Model.Student;
 import com.example.demo.Repo.StudentDaoFile;
 import com.example.demo.Repo.StudentRepository;
 import com.example.demo.View.StudentView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,15 +17,9 @@ public class StudentController {
 
     List<Student> lista;
     StudentView studentView;
-    private int DAOType;
 
-    public final int DBType = 1;
-    public final int FileType = 2;
-
-    @Autowired
-    private StudentRepository studentRepo;
-    @Autowired
-    StudentDaoFile studentDaoFile;
+    CrudRepository<Kurs, Integer> kursDao;
+    CrudRepository<Student, Integer> studentDao;
 
     public StudentController() {
     }
@@ -31,12 +27,7 @@ public class StudentController {
     public void addStudent() {
         setList();
         Student student = studentView.addStudent();
-
-        if(DAOType == DBType){
-            studentRepo.save(student);
-        } else if(DAOType == FileType) {
-            studentDaoFile.save(student);
-        }
+        studentDao.save(student);
     }
 
     public void showStudent(int i) {
@@ -52,35 +43,20 @@ public class StudentController {
         setList();
         int id = studentView.editStudent();
         Student student = null;
-        if(DAOType == DBType){
-            student = studentRepo.findOne(id);
-            student = studentView.editStudent(student);
-            studentRepo.save(student);
-        } else if(DAOType == FileType) {
-            student = studentDaoFile.findOne(id);
-            student = studentView.editStudent(student);
-            studentDaoFile.edit(student);
-        }
+        student = studentDao.findOne(id);
+        student = studentView.editStudent(student);
+        studentDao.save(student);
     }
 
     public void deleteStudent() {
         setList();
         int id = studentView.deleteStudent();
-        if(DAOType == DBType){
-            studentRepo.delete(id);
-        } else if(DAOType == FileType) {
-            studentDaoFile.delete(id);
-        }
-
+        studentDao.delete(id);
     }
 
     private void setList() {
         studentView = new StudentView();
-        if (DAOType == DBType) {
-            lista = Lists.newArrayList(studentRepo.findAll());
-        } else if (DAOType == FileType) {
-            lista = studentDaoFile.findAll();
-        }
+        lista = Lists.newArrayList(studentDao.findAll());
     }
 
     public void setStudentToKurs() {
@@ -88,19 +64,13 @@ public class StudentController {
         int ids = studentView.editStudent();
         int idk = studentView.getKursId();
         Student student = null;
-        if(DAOType == DBType){
-            student = studentRepo.findOne(new Integer(ids));
-            student.setIdkusru(idk);
-            studentRepo.save(student);
-        } else if(DAOType == FileType) {
-            student = studentDaoFile.findOne(ids);
-            student.setIdkusru(idk);
-            studentDaoFile.edit(student);
-        }
-
+        student = studentDao.findOne(new Integer(ids));
+        student.setIdkusru(idk);
+        studentDao.save(student);
     }
 
-    public void setDAOType(int DAOType) {
-        this.DAOType = DAOType;
+    public void setDAOType(CrudRepository<Kurs, Integer> kursDao, CrudRepository<Student, Integer> studentDao) {
+        this.kursDao = kursDao;
+        this.studentDao = studentDao;
     }
 }

@@ -21,6 +21,7 @@ public class Kurs {
     public Kurs(String nazwa, String typ) {
         this.nazwa = nazwa;
         this.typ = typ;
+        id = -1;
     }
 
     public int getId() {

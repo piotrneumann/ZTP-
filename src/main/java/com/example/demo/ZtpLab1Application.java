@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.Controller.MainController;
+import com.example.demo.Model.Kurs;
+import com.example.demo.Repo.KursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,9 @@ public class ZtpLab1Application implements CommandLineRunner{
 @Autowired
 MainController mainController;
 
+@Autowired
+KursRepository kursRepository;
+
 	public static void main(String[] args) {
 		//SpringApplication.run(ZtpLab1Application.class, args);
 		SpringApplication.run(ZtpLab1Application.class, args);
@@ -23,6 +28,9 @@ MainController mainController;
 	public void run(String... strings) throws Exception {
 
 		//MainController mainController = new MainController();
+
+
+
 		mainController.showDAO();
 		int choice = mainController.getChoice();
 		mainController.setDAOType(choice);

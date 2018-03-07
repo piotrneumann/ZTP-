@@ -24,6 +24,7 @@ public class Student {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.idkusru = idkusru;
+        id = -1;
     }
 
     public Student(String imie, String nazwisko) {
